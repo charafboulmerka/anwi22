@@ -127,7 +127,7 @@
                     @else
                     <select name="address[state]" class="form-control address-control-item address-control-item-required" id="address_wilaya" data-type="wilaya" data-url="">
                         @foreach ($yalidine_wilayas as $wilaya)
-                            <option value="{{ $wilaya->id }}">{{ $wilaya->name }}</option>
+                            <option value="{{ $wilaya->id }}" @if ($wilaya->id == 16) selected @endif>{{ $wilaya->name }}</option>
                         @endforeach
                     </select>
                     @endif
@@ -150,7 +150,11 @@
                             <i class="fas fa-angle-down"></i>
                         </div>
                     @else
-                        <input id="address_city" type="text" class="form-control address-control-item address-control-item-required checkout-input" placeholder="{{ __('City') }}" name="address[city]" value="{{ old('address.city', Arr::get($sessionCheckoutData, 'city')) }}">
+                    <select name="address[state]" class="form-control address-control-item address-control-item-required" id="address_commune" data-type="commune" data-url="">
+                        @foreach ($algiers_communes as $communes)
+                            <option value="{{ $communes->id }}">{{ $communes->name }}</option>
+                        @endforeach
+                    </select>
                     @endif
                     {!! Form::error('address.city', $errors) !!}
                 </div>

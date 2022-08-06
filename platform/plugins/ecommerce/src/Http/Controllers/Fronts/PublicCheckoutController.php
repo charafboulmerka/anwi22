@@ -46,9 +46,11 @@ use Validator;
 
 /* Meribout */
 use Botble\Ecommerce\Models\YalidineWilayas;
+use Botble\Ecommerce\Models\YalidineCommunes;
 
 class PublicCheckoutController
 {
+    
     /**
      * @var TaxInterface
      */
@@ -98,6 +100,8 @@ class PublicCheckoutController
      * @var DiscountInterface
      */
     protected $discountRepository;
+    /* Meribout */
+    protected $algiers;
 
     /**
      * PublicCheckoutController constructor.
@@ -122,9 +126,11 @@ class PublicCheckoutController
         ShippingInterface     $shippingRepository,
         OrderHistoryInterface $orderHistoryRepository,
         ProductInterface      $productRepository,
+        YalidineWilayas       $algiers,
         DiscountInterface     $discountRepository
     )
     {
+        $this->algiers = $algiers;
         $this->taxRepository = $taxRepository;
         $this->orderRepository = $orderRepository;
         $this->orderProductRepository = $orderProductRepository;
@@ -284,6 +290,11 @@ class PublicCheckoutController
         }
         /* Meribout */
         $yalidine_wilayas = YalidineWilayas::all();
+        $this->algiers->id = 16;
+        $algiers_communes = $this->algiers->variationCommunes()->get();
+        //echo "<pre>";
+        //print_r($algiers_communes);
+        //echo "</pre>";
         $data = compact(
             'token',
             'shipping',
@@ -294,7 +305,8 @@ class PublicCheckoutController
             'couponDiscountAmount',
             'sessionCheckoutData',
             'products',
-            'yalidine_wilayas'
+            'yalidine_wilayas',
+            'algiers_communes',
         );
 
         $checkoutView = Theme::getThemeNamespace() . '::views.ecommerce.orders.checkout';

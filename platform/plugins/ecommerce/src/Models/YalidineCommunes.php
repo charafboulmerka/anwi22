@@ -1,9 +1,10 @@
 <?php
-
-namespace Botble\Media\Models;
+/* Meribout */
+namespace Botble\Ecommerce\Models;
 
 use Botble\Base\Models\BaseModel;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Botble\Ecommerce\Models\YalidineWilayas;
 
 class YalidineCommunes extends BaseModel
 {

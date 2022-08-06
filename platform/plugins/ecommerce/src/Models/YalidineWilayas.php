@@ -4,6 +4,7 @@ namespace Botble\Ecommerce\Models;
 
 use Botble\Base\Models\BaseModel;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Botble\Ecommerce\Models\YalidineCommunes;
 
 class YalidineWilayas extends BaseModel
 {
