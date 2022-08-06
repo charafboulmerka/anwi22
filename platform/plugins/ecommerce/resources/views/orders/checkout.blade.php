@@ -152,7 +152,7 @@
                             <br>
                         @endif
 
-                        <div class="position-relative">
+                        <div class="position-relative d-none" >
                             <div class="payment-info-loading" style="display: none;">
                                 <div class="payment-info-loading-content">
                                     <i class="fas fa-spinner fa-spin"></i>
@@ -184,18 +184,11 @@
                                         </div>
                                     </li>
                                 @endif
-
-                                @if (setting('payment_bank_transfer_status') == 1)
-                                    <li class="list-group-item">
-                                        <input class="magic-radio js_payment_method" type="radio" name="payment_method" id="payment_bank_transfer"
-                                               @if ((session('selected_payment_method') ?: setting('default_payment_method')) == \Botble\Payment\Enums\PaymentMethodEnum::BANK_TRANSFER) checked @endif
-                                               value="bank_transfer" data-bs-toggle="collapse" data-bs-target=".payment_bank_transfer_wrap" data-parent=".list_payment_method">
-                                        <label for="payment_bank_transfer" class="text-start">{{ setting('payment_bank_transfer_name', trans('plugins/payment::payment.payment_via_bank_transfer')) }}</label>
-                                        <div class="payment_bank_transfer_wrap payment_collapse_wrap collapse @if ((session('selected_payment_method') ?: setting('default_payment_method')) == \Botble\Payment\Enums\PaymentMethodEnum::BANK_TRANSFER) show @endif" style="padding: 15px 0;">
-                                            {!! BaseHelper::clean(setting('payment_bank_transfer_description')) !!}
-                                        </div>
-                                    </li>
-                                @endif
+                                @php 
+                                /* Meribout */
+                                /* setting('payment_bank_transfer_status') is deleted */
+                                @endphp
+                                
                             </ul>
                         </div>
 

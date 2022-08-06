@@ -44,6 +44,9 @@ use OrderHelper;
 use Theme;
 use Validator;
 
+/* Meribout */
+use Botble\Ecommerce\Models\YalidineWilayas;
+
 class PublicCheckoutController
 {
     /**
@@ -279,7 +282,8 @@ class PublicCheckoutController
                 }
             }
         }
-
+        /* Meribout */
+        $yalidine_wilayas = YalidineWilayas::all();
         $data = compact(
             'token',
             'shipping',
@@ -290,6 +294,7 @@ class PublicCheckoutController
             'couponDiscountAmount',
             'sessionCheckoutData',
             'products',
+            'yalidine_wilayas'
         );
 
         $checkoutView = Theme::getThemeNamespace() . '::views.ecommerce.orders.checkout';
@@ -321,8 +326,10 @@ class PublicCheckoutController
      */
     protected function processOrderData(string $token, array $sessionData, Request $request, bool $finished = false): array
     {
+        
         if ($request->input('address', [])) {
             if (!isset($sessionData['created_account']) && $request->input('create_account') == 1) {
+                
                 $validator = Validator::make($request->input(), [
                     'password'              => 'required|min:6',
                     'password_confirmation' => 'required|same:password',
@@ -356,7 +363,7 @@ class PublicCheckoutController
                     $sessionData['address_id'] = $address->id;
                 }
             }
-
+            
             if ($finished && auth('customer')->check() && (auth('customer')->user()->addresses()->count() == 0 || $request->input('address.address_id') == 'new')) {
                 $address = $this->addressRepository->createOrUpdate($request->input('address', []) +
                     ['customer_id' => auth('customer')->id(), 'is_default' => auth('customer')->user()->addresses()->count() == 0]);
@@ -365,8 +372,10 @@ class PublicCheckoutController
                 $sessionData['address_id'] = $address->id;
             }
         }
-
+        
+        
         if (is_plugin_active('marketplace')) {
+            
             $products = Cart::instance('cart')->products();
 
             $sessionData = apply_filters(
@@ -378,11 +387,11 @@ class PublicCheckoutController
             );
 
             OrderHelper::setOrderSessionData($token, $sessionData);
-
             return $sessionData;
         }
-
+        
         if (!isset($sessionData['created_order'])) {
+            
             $currentUserId = 0;
             if (auth('customer')->check()) {
                 $currentUserId = auth('customer')->id();
@@ -411,6 +420,7 @@ class PublicCheckoutController
             $sessionData['created_order'] = true;
             $sessionData['created_order_id'] = $order->id;
         }
+        
 
         $address = null;
 
@@ -455,6 +465,7 @@ class PublicCheckoutController
                 (array)$request->input('address', [])
             );
         }
+        
 
         foreach ($addressData as $key => $addressItem) {
             if (!is_string($addressItem)) {

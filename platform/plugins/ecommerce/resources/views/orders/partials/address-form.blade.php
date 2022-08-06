@@ -1,7 +1,7 @@
 <div class="customer-address-payment-form">
-
+    
     @if (EcommerceHelper::isEnabledGuestCheckout() && !auth('customer')->check())
-        <div class="form-group mb-3">
+        <div class="form-group mb-3 d-none">
             <p>{{ __('Already have an account?') }} <a href="{{ route('customer.login') }}">{{ __('Login') }}</a></p>
         </div>
     @endif
@@ -77,13 +77,13 @@
         </div>
 
         <div class="row">
-            <div class="col-lg-8 col-12">
+            <div class="col-lg-8 col-12 d-none">
                 <div class="form-group  @if ($errors->has('address.email')) has-error @endif">
                     <input type="text" name="address[email]" id="address_email" placeholder="{{ __('Email') }}" class="form-control address-control-item address-control-item-required checkout-input" value="{{ old('address.email', Arr::get($sessionCheckoutData, 'email')) }}">
                     {!! Form::error('address.email', $errors) !!}
                 </div>
             </div>
-            <div class="col-lg-4 col-12">
+            <div class="col-lg-12 col-12">
                 <div class="form-group  @if ($errors->has('address.phone')) has-error @endif">
                     <input type="text" name="address[phone]" id="address_phone" placeholder="{{ __('Phone') }} {{ EcommerceHelper::isPhoneFieldOptionalAtCheckout() ? __('(optional)') : '' }}" class="form-control address-control-item {{ !EcommerceHelper::isPhoneFieldOptionalAtCheckout() ? 'address-control-item-required' : '' }} checkout-input" value="{{ old('address.phone', Arr::get($sessionCheckoutData, 'phone')) }}">
                     {!! Form::error('address.phone', $errors) !!}
@@ -125,7 +125,11 @@
                             <i class="fas fa-angle-down"></i>
                         </div>
                     @else
-                        <input id="address_state" type="text" class="form-control address-control-item address-control-item-required checkout-input" placeholder="{{ __('State') }}" name="address[state]" value="{{ old('address.state', Arr::get($sessionCheckoutData, 'state')) }}">
+                    <select name="address[state]" class="form-control address-control-item address-control-item-required" id="address_wilaya" data-type="wilaya" data-url="">
+                        @foreach ($yalidine_wilayas as $wilaya)
+                            <option value="{{ $wilaya->id }}">{{ $wilaya->name }}</option>
+                        @endforeach
+                    </select>
                     @endif
                     {!! Form::error('address.state', $errors) !!}
                 </div>
@@ -171,7 +175,7 @@
     </div>
 
     @if (!auth('customer')->check())
-        <div class="row">
+        <div class="row d-none">
 
             <div class="col-12">
                 <div class="form-group mb-3">
