@@ -14,6 +14,7 @@ class UpdateDefaultProductService
     {
         $parent = $product->original_product;
 
+        //this on excutes to update product after updating or selecting default variation
         $data = [
             'sku',
             'quantity',
@@ -21,6 +22,7 @@ class UpdateDefaultProductService
             'with_storehouse_management',
             'stock_status',
             'sale_type',
+            'marge', //Charaf
             'price',
             'sale_price',
             'start_date',

@@ -381,6 +381,8 @@ trait ProductActionsTrait
                 $productVariation->createOrUpdate($latestVariation);
                 if ($originProduct && $latestVariation->product->id) {
                     $originProduct->sku = $latestVariation->product->sku;
+                    /**Charaf adding marge for no reason */
+                    $originProduct->marge = $latestVariation->product->marge;
                     $originProduct->price = $latestVariation->product->price;
                     $originProduct->length = $latestVariation->product->length;
                     $originProduct->wide = $latestVariation->product->wide;

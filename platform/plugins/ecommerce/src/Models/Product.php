@@ -34,6 +34,7 @@ class Product extends BaseModel
     /**
      * @var array
      */
+    /**Charaf*/
     protected $fillable = [
         'name',
         'description',
@@ -49,6 +50,7 @@ class Product extends BaseModel
         'brand_id',
         'is_variation',
         'sale_type',
+        'marge', //add marge
         'price',
         'sale_price',
         'start_date',
@@ -384,18 +386,19 @@ class Product extends BaseModel
      * get sale price of product, if not exist return false
      * @return float
      */
+    /**Charaf --add marge */
     public function getFrontSalePriceAttribute()
     {
         $price = $this->getDiscountPrice();
 
         if ($price != $this->price) {
-            return $this->getComparePrice($price, $this->sale_price ?: $this->price);
+            return $this->getComparePrice($price, $this->sale_price ?: $this->price)+$this->marge;
         }
 
         $price = $this->getFlashSalePrice();
 
         if ($price != $this->price) {
-            return $this->getComparePrice($price, $this->sale_price ?: $this->price);
+            return $this->getComparePrice($price, $this->sale_price ?: $this->price)+$this->marge;
         }
 
         return $this->getComparePrice($this->price, $this->sale_price);
@@ -603,26 +606,27 @@ class Product extends BaseModel
      * Get product sale price including taxes
      * @return float
      */
+    /**Charaf --add marge */
     public function getFrontSalePriceWithTaxesAttribute()
     {
         if (!EcommerceHelper::isDisplayProductIncludingTaxes()) {
-            return $this->front_sale_price;
+            return $this->front_sale_price+$this->marge;
         }
-
-        return $this->front_sale_price + $this->front_sale_price * ($this->tax->percentage / 100);
+        return $this->front_sale_price + $this->front_sale_price * ($this->tax->percentage / 100)+$this->marge;
     }
 
     /**
      * Get product sale price including taxes
      * @return float
      */
+    /**Charaf --add marge */
     public function getPriceWithTaxesAttribute()
     {
         if (!EcommerceHelper::isDisplayProductIncludingTaxes()) {
-            return $this->price;
+            return $this->price+$this->marge;
         }
 
-        return $this->price + $this->price * ($this->tax->percentage / 100);
+        return $this->price + $this->price * ($this->tax->percentage / 100)+$this->marge;
     }
 
     /**
@@ -675,13 +679,14 @@ class Product extends BaseModel
      */
     public function getPriceInTableAttribute()
     {
-        $price = format_price($this->front_sale_price);
+        error_log($this->marge);
+        $price = format_price($this->front_sale_price + $this->marge);
 
         if ($this->front_sale_price != $this->price) {
-            $price .= ' <del class="text-danger">' . format_price($this->price) . '</del>';
+            $price .= ' <del class="text-danger">' . format_price($this->price + $this->marge) . '</del>';
         }
 
-        return $price;
+        return "$price";
     }
 
     /**

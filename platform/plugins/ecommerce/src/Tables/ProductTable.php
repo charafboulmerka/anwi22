@@ -115,6 +115,7 @@ class ProductTable extends TableAbstract
                 'status',
                 'sku',
                 'images',
+                'marge', //Charaf
                 'price',
                 'sale_price',
                 'sale_type',

@@ -25,6 +25,7 @@ class ProductVariationResource extends JsonResource
             'is_out_of_stock'            => $this->isOutOfStock(),
             'stock_status_label'         => $this->stock_status_label,
             'stock_status_html'          => $this->stock_status_html,
+            'marge'                      => $this->marge,
             'price'                      => $this->price_with_taxes,
             'sale_price'                 => $this->front_sale_price_with_taxes,
             'original_price'             => $this->original_price,

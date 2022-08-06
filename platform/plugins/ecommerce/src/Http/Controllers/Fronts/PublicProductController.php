@@ -469,6 +469,7 @@ class PublicProductController
                     'ec_products.id',
                     'ec_products.name',
                     'ec_products.quantity',
+                    'ec_products.marge', /**Charaf */
                     'ec_products.price',
                     'ec_products.sale_price',
                     'ec_products.allow_checkout_when_out_of_stock',
@@ -539,6 +540,7 @@ class PublicProductController
                     'ec_products.id',
                     'ec_products.name',
                     'ec_products.quantity',
+                    'ec_products.marge', /**Charaf */
                     'ec_products.price',
                     'ec_products.sale_price',
                     'ec_products.allow_checkout_when_out_of_stock',
