@@ -7,7 +7,6 @@ try {
 
 import {CheckoutAddress} from './partials/address';
 import {DiscountManagement} from './partials/discount';
-
 class MainCheckout {
     constructor() {
         new CheckoutAddress().init();
@@ -46,8 +45,41 @@ class MainCheckout {
     }
 
     init() {
-        let shippingForm = '#main-checkout-product-info';
 
+        /* Meribout */
+
+        $(document).on('change', '#address_wilaya', event => {
+            event.preventDefault();
+            let _self = $(event.currentTarget);
+            let wilayaChoosen = $('#address_wilaya option:selected').val();
+            getCommunesListByWilayaID(_self,wilayaChoosen);
+            loadShippingFeeAtTheFirstTime();
+        });
+
+        function getCommunesListByWilayaID(_self,wilaya_id)  {
+            $.ajax({
+                url: _self.data('url'),
+                type: 'POST',
+                data: {
+                    wilaya_id: wilaya_id,
+                },
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: res => {
+                    $('#address_commune').find('option').remove();
+                    $.each(JSON.parse(res), function(i,commune) {
+                        $('#address_commune').append($('<option>').val(commune.id).text(commune.name));
+                    });
+                },
+                error: data => {
+                    console.log("error");
+                }
+            });
+        }
+
+        let  shippingForm = '#main-checkout-product-info';
+        
         let disablePaymentMethodsForm = () => {
             $('.payment-info-loading').show();
             $('.payment-checkout-btn').prop('disabled', true);
@@ -85,6 +117,8 @@ class MainCheckout {
                 $(shippingForm).load(window.location.href
                     + '?shipping_method=' + shippingMethod.val()
                     + '&shipping_option=' + shippingMethod.data('option')
+                    /* Meribout */
+                    + '&wilaya_id='+$('#address_wilaya option:selected').val() 
                     + ' ' + shippingForm + ' > *', () => {
                     if (!isAddressAvailable) {
                         $('.customer-address-payment-form').replaceWith(addressForm);
@@ -186,6 +220,7 @@ class MainCheckout {
         });
 
         $(document).on('change', 'input[name=shipping_method]', event => {
+            alert("azdza");
             // Fixed: set shipping_option value based on shipping_method change:
             const $this = $(event.currentTarget);
             $('input[name=shipping_option]').val($this.data('option'));
@@ -202,7 +237,7 @@ class MainCheckout {
             const selectedState = $('.customer-address-payment-form #address_state option:selected').val();
             const selectedCity = $('.customer-address-payment-form #address_city option:selected').val();
 
-            $('.shipping-info-loading').show();
+            $('.shipping-info-loading').show();            
             $(shippingForm).load(window.location.href
                 + '?shipping_method=' + $this.val()
                 + '&shipping_option=' + $this.data('option')

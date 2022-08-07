@@ -286,15 +286,20 @@ class PublicCheckoutController
                 } else {
                     $shippingAmount = Arr::get($sessionCheckoutData, 'is_free_shipping') ? 0 : $shippingAmount;
                 }
+                
             }
         }
+        
         /* Meribout */
+        if ( request('wilaya_id') != NULL) {
+            /* hna nkamal njib 7a9 la livraison men Yalidine */
+            $shippingAmount = request('wilaya_id');
+        } else {
+            $shippingAmount = 500.00;
+        }
         $yalidine_wilayas = YalidineWilayas::all();
         $this->algiers->id = 16;
         $algiers_communes = $this->algiers->variationCommunes()->get();
-        //echo "<pre>";
-        //print_r($algiers_communes);
-        //echo "</pre>";
         $data = compact(
             'token',
             'shipping',

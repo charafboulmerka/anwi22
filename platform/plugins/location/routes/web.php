@@ -83,4 +83,8 @@ Route::group(['namespace' => 'Botble\Location\Http\Controllers', 'middleware' =>
         ->name('ajax.states-by-country');
     Route::get('ajax/cities-by-state', 'CityController@ajaxGetCities')
         ->name('ajax.cities-by-state');
+    /* Meribout */
+    Route::post('ajax/communes-by-wilaya', 'YalidineController@ajaxGetCommunesByWilayaID')
+    ->name('ajax.communes-by-wilaya');
+        
 });

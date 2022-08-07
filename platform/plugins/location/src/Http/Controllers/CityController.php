@@ -214,4 +214,5 @@ class CityController extends BaseController
 
         return $response->setData(CityResource::collection($data));
     }
+
 }

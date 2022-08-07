@@ -125,7 +125,7 @@
                             <i class="fas fa-angle-down"></i>
                         </div>
                     @else
-                    <select name="address[state]" class="form-control address-control-item address-control-item-required" id="address_wilaya" data-type="wilaya" data-url="">
+                    <select name="address[state]" class="form-control address-control-item address-control-item-required" id="address_wilaya" data-type="wilaya" data-url="{{ route('ajax.communes-by-wilaya') }}">
                         @foreach ($yalidine_wilayas as $wilaya)
                             <option value="{{ $wilaya->id }}" @if ($wilaya->id == 16) selected @endif>{{ $wilaya->name }}</option>
                         @endforeach
