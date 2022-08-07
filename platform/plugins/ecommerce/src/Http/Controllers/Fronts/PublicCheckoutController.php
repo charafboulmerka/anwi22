@@ -487,6 +487,10 @@ class PublicCheckoutController
                 ['order_id' => $sessionData['created_order_id']],
                 (array)$request->input('address', [])
             );
+            /* Meribout */
+            $info_wilaya = YalidineCommunes::where("id",$addressData["city"])->get()->first();
+            $addressData["state"] = $info_wilaya->wilaya_name;
+            $addressData["city"] = $info_wilaya->name;
         }
 
         foreach ($addressData as $key => $addressItem) {
@@ -496,10 +500,7 @@ class PublicCheckoutController
 
             $addressData[$key] = BaseHelper::clean($addressItem);
         }
-        /* Meribout */
-        $info_wilaya = YalidineCommunes::where("id",$addressData["city"])->get()->first();
-        $addressData["state"] = $info_wilaya->wilaya_name;
-        $addressData["city"] = $info_wilaya->name;
+        
         
         if ($addressData && !empty($addressData['name']) && (EcommerceHelper::isPhoneFieldOptionalAtCheckout() || !empty($addressData['phone'])) && !empty($addressData['address'])) {
             if (!isset($sessionData['created_order_address'])) {
