@@ -349,6 +349,7 @@ class PublicCheckoutController
     {
         
         if ($request->input('address', [])) {
+            
             if (!isset($sessionData['created_account']) && $request->input('create_account') == 1) {
                 
                 $validator = Validator::make($request->input(), [
@@ -444,8 +445,9 @@ class PublicCheckoutController
         
 
         $address = null;
-
+        
         if ($request->input('address.address_id') && $request->input('address.address_id') !== 'new') {
+            
             $address = $this->addressRepository->findById($request->input('address.address_id'));
             if (!empty($address)) {
                 $sessionData['address_id'] = $address->id;
@@ -461,7 +463,7 @@ class PublicCheckoutController
                 $sessionData['address_id'] = $address->id;
             }
         }
-
+        
         if (Arr::get($sessionData, 'address_id') && Arr::get($sessionData, 'address_id') !== 'new') {
             $address = $this->addressRepository->findById(Arr::get($sessionData, 'address_id'));
         }
@@ -486,7 +488,6 @@ class PublicCheckoutController
                 (array)$request->input('address', [])
             );
         }
-        
 
         foreach ($addressData as $key => $addressItem) {
             if (!is_string($addressItem)) {
@@ -495,7 +496,11 @@ class PublicCheckoutController
 
             $addressData[$key] = BaseHelper::clean($addressItem);
         }
-
+        /* Meribout */
+        $info_wilaya = YalidineCommunes::where("id",$addressData["city"])->get()->first();
+        $addressData["state"] = $info_wilaya->wilaya_name;
+        $addressData["city"] = $info_wilaya->name;
+        
         if ($addressData && !empty($addressData['name']) && (EcommerceHelper::isPhoneFieldOptionalAtCheckout() || !empty($addressData['phone'])) && !empty($addressData['address'])) {
             if (!isset($sessionData['created_order_address'])) {
                 $createdOrderAddress = $this->createOrderAddress(
