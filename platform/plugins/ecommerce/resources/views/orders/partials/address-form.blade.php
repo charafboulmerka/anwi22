@@ -1,5 +1,9 @@
 <div class="customer-address-payment-form">
-    
+<div class="shipping-info-loading" style="display: none;">
+                                    <div class="shipping-info-loading-content">
+                                        <i class="fas fa-spinner fa-spin"></i>
+                                    </div>
+                                </div>
     @if (EcommerceHelper::isEnabledGuestCheckout() && !auth('customer')->check())
         <div class="form-group mb-3 d-none">
             <p>{{ __('Already have an account?') }} <a href="{{ route('customer.login') }}">{{ __('Login') }}</a></p>
@@ -127,7 +131,7 @@
                     @else
                     <select name="address[state]" class="form-control address-control-item address-control-item-required" id="address_wilaya" data-type="wilaya" data-url="{{ route('ajax.communes-by-wilaya') }}">
                         @foreach ($yalidine_wilayas as $wilaya)
-                            <option value="{{ $wilaya->id }}" @if ($wilaya->id == 16) selected @endif>{{ $wilaya->name }}</option>
+                            <option value="{{ $wilaya->id }}" @if ($wilaya->id == $wilaya_selected) selected @endif>{{ $wilaya->name }}</option>
                         @endforeach
                     </select>
                     @endif
@@ -150,7 +154,7 @@
                             <i class="fas fa-angle-down"></i>
                         </div>
                     @else
-                    <select name="address[state]" class="form-control address-control-item address-control-item-required" id="address_commune" data-type="commune" data-url="">
+                    <select name="address[city]" class="form-control address-control-item address-control-item-required" id="address_commune" data-type="commune" data-url="">
                         @foreach ($algiers_communes as $communes)
                             <option value="{{ $communes->id }}">{{ $communes->name }}</option>
                         @endforeach
@@ -160,9 +164,9 @@
                 </div>
             </div>
 
-            <div class="col-12">
+            <div class="col-12 d-none">
                 <div class="form-group mb-3 @if ($errors->has('address.address')) has-error @endif">
-                    <input id="address_address" type="text" class="form-control address-control-item address-control-item-required checkout-input" placeholder="{{ __('Address') }}" name="address[address]" value="{{ old('address.address', Arr::get($sessionCheckoutData, 'address')) }}">
+                    <input id="address_address" type="text" class="form-control address-control-item checkout-input" placeholder="{{ __('Address') }}" name="address[address]" value="Addresse">
                     {!! Form::error('address.address', $errors) !!}
                 </div>
             </div>

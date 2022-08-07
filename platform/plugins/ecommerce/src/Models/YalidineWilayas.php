@@ -35,6 +35,14 @@ class YalidineWilayas extends BaseModel
         return $this->hasMany(YalidineCommunes::class, 'wilaya_id','id');
     }
 
+    /**
+     * @return Price
+     */
+    public function getPriceByIDWilaya()
+    {
+        return $this->get("yalidine_price")->first()->yalidine_price;
+    }
+
     protected static function boot()
     {
         parent::boot();

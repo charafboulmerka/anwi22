@@ -291,15 +291,20 @@ class PublicCheckoutController
         }
         
         /* Meribout */
-        if ( request('wilaya_id') != NULL) {
-            /* hna nkamal njib 7a9 la livraison men Yalidine */
-            $shippingAmount = request('wilaya_id');
-        } else {
-            $shippingAmount = 500.00;
-        }
         $yalidine_wilayas = YalidineWilayas::all();
-        $this->algiers->id = 16;
-        $algiers_communes = $this->algiers->variationCommunes()->get();
+        if ( request('wilaya_id') != NULL) {
+            $this->algiers->id = request('wilaya_id');
+            $yalidine_wilayas_price = YalidineWilayas::where("id",$this->algiers->id)->get();
+            $shippingAmount = $yalidine_wilayas_price->first()->yalidine_price;
+            $algiers_communes = $this->algiers->variationCommunes()->get();
+        } else {
+            $this->algiers->id = 16;
+            $yalidine_wilayas_price = YalidineWilayas::where("id",$this->algiers->id)->get();
+            $shippingAmount = $yalidine_wilayas_price->first()->yalidine_price;
+            $algiers_communes = $this->algiers->variationCommunes()->get();
+        }
+        $wilaya_selected = $this->algiers->id;
+        
         $data = compact(
             'token',
             'shipping',
@@ -312,13 +317,12 @@ class PublicCheckoutController
             'products',
             'yalidine_wilayas',
             'algiers_communes',
+            'wilaya_selected'
         );
-
         $checkoutView = Theme::getThemeNamespace() . '::views.ecommerce.orders.checkout';
         if (view()->exists($checkoutView)) {
             return view($checkoutView, $data);
         }
-
         return view('plugins/ecommerce::orders.checkout', $data);
     }
 

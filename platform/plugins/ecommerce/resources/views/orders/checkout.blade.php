@@ -122,13 +122,8 @@
                         <br>
 
                         @if (!is_plugin_active('marketplace'))
-                            <div id="shipping-method-wrapper">
+                            <div id="shipping-method-wrapper" >
                                 <h5 class="checkout-payment-title">{{ __('Shipping method') }}</h5>
-                                <div class="shipping-info-loading" style="display: none;">
-                                    <div class="shipping-info-loading-content">
-                                        <i class="fas fa-spinner fa-spin"></i>
-                                    </div>
-                                </div>
                                 @if (!empty($shipping))
                                     <div class="payment-checkout-form">
                                         <input type="hidden" name="shipping_option" value="{{ old('shipping_option', $defaultShippingOption) }}">

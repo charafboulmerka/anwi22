@@ -48,15 +48,21 @@ class MainCheckout {
 
         /* Meribout */
 
+        /*if ( $('#address_name').val() == "") {
+            $('#address_name').val("AAAA");
+        }
+
+        if ( $('#address_name').val() == "") {
+            $('#address_name').val("BBBB");
+        }*/
+
         $(document).on('change', '#address_wilaya', event => {
             event.preventDefault();
-            let _self = $(event.currentTarget);
-            let wilayaChoosen = $('#address_wilaya option:selected').val();
-            getCommunesListByWilayaID(_self,wilayaChoosen);
             loadShippingFeeAtTheFirstTime();
         });
 
         function getCommunesListByWilayaID(_self,wilaya_id)  {
+            
             $.ajax({
                 url: _self.data('url'),
                 type: 'POST',
@@ -70,12 +76,14 @@ class MainCheckout {
                     $('#address_commune').find('option').remove();
                     $.each(JSON.parse(res), function(i,commune) {
                         $('#address_commune').append($('<option>').val(commune.id).text(commune.name));
-                    });
+                    });                    
                 },
                 error: data => {
                     console.log("error");
                 }
             });
+            
+            $('.shipping-info-loading').hide();
         }
 
         let  shippingForm = '#main-checkout-product-info';
@@ -112,8 +120,11 @@ class MainCheckout {
                 const selectedCountry = $('.customer-address-payment-form #address_country option:selected').val();
                 const selectedState = $('.customer-address-payment-form #address_state option:selected').val();
                 const selectedCity = $('.customer-address-payment-form #address_city option:selected').val();
+                const wilaya_selected = $('#address_wilaya option:selected').val();
 
                 $('.shipping-info-loading').show();
+                let element = $('#address_commune');
+                element.prop("disabled", true);
                 $(shippingForm).load(window.location.href
                     + '?shipping_method=' + shippingMethod.val()
                     + '&shipping_option=' + shippingMethod.data('option')
@@ -134,8 +145,11 @@ class MainCheckout {
                             $('.customer-address-payment-form #address_city').val(selectedCity);
                         }
                     }
-                    $('.shipping-info-loading').hide();
+                    
+                    $('#address_wilaya option[value="'+wilaya_selected+'"]').attr('selected','selected');
+                    getCommunesListByWilayaID($('#address_wilaya'),wilaya_selected);
                     enablePaymentMethodsForm();
+                    element.prop("disabled", false);
                 });
             }
         }
@@ -193,7 +207,12 @@ class MainCheckout {
             const selectedCity = $('.customer-address-payment-form #address_city option:selected').val();
 
             $('.shipping-info-loading').show();
-            $(shippingForm).load(window.location.href + '?' + $.param(methods) + ' ' + shippingForm + ' > *', () => {
+            $(shippingForm).load(window.location.href + '?' 
+            + $.param(methods) 
+            + ' ' 
+            /* Meribout */
+            + '&wilaya_id='+$('#address_wilaya option:selected').val()
+            + shippingForm + ' > *', () => {
                 if (!isAddressAvailable) {
                     $('.customer-address-payment-form').replaceWith(addressForm);
                     if (selectedCountry) {
@@ -220,7 +239,6 @@ class MainCheckout {
         });
 
         $(document).on('change', 'input[name=shipping_method]', event => {
-            alert("azdza");
             // Fixed: set shipping_option value based on shipping_method change:
             const $this = $(event.currentTarget);
             $('input[name=shipping_option]').val($this.data('option'));
