@@ -19610,6 +19610,42 @@ var MainCheckout = /*#__PURE__*/function () {
   _createClass(MainCheckout, [{
     key: "init",
     value: function init() {
+      /* Meribout */
+
+      /*if ( $('#address_name').val() == "") {
+          $('#address_name').val("AAAA");
+      }
+        if ( $('#address_name').val() == "") {
+          $('#address_name').val("BBBB");
+      }*/
+      $(document).on('change', '#address_wilaya', function (event) {
+        event.preventDefault();
+        loadShippingFeeAtTheFirstTime();
+      });
+
+      function getCommunesListByWilayaID(_self, wilaya_id) {
+        $.ajax({
+          url: _self.data('url'),
+          type: 'POST',
+          data: {
+            wilaya_id: wilaya_id
+          },
+          headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          },
+          success: function success(res) {
+            $('#address_commune').find('option').remove();
+            $.each(JSON.parse(res), function (i, commune) {
+              $('#address_commune').append($('<option>').val(commune.id).text(commune.name));
+            });
+          },
+          error: function error(data) {
+            console.log("error");
+          }
+        });
+        $('.shipping-info-loading').hide();
+      }
+
       var shippingForm = '#main-checkout-product-info';
 
       var disablePaymentMethodsForm = function disablePaymentMethodsForm() {
@@ -19639,8 +19675,13 @@ var MainCheckout = /*#__PURE__*/function () {
           var selectedCountry = $('.customer-address-payment-form #address_country option:selected').val();
           var selectedState = $('.customer-address-payment-form #address_state option:selected').val();
           var selectedCity = $('.customer-address-payment-form #address_city option:selected').val();
+          var wilaya_selected = $('#address_wilaya option:selected').val();
           $('.shipping-info-loading').show();
-          $(shippingForm).load(window.location.href + '?shipping_method=' + shippingMethod.val() + '&shipping_option=' + shippingMethod.data('option') + ' ' + shippingForm + ' > *', function () {
+          var element = $('#address_commune');
+          element.prop("disabled", true);
+          $(shippingForm).load(window.location.href + '?shipping_method=' + shippingMethod.val() + '&shipping_option=' + shippingMethod.data('option')
+          /* Meribout */
+          + '&wilaya_id=' + $('#address_wilaya option:selected').val() + ' ' + shippingForm + ' > *', function () {
             if (!isAddressAvailable) {
               $('.customer-address-payment-form').replaceWith(addressForm);
 
@@ -19657,8 +19698,10 @@ var MainCheckout = /*#__PURE__*/function () {
               }
             }
 
-            $('.shipping-info-loading').hide();
+            $('#address_wilaya option[value="' + wilaya_selected + '"]').attr('selected', 'selected');
+            getCommunesListByWilayaID($('#address_wilaya'), wilaya_selected);
             enablePaymentMethodsForm();
+            element.prop("disabled", false);
           });
         }
       };
@@ -19714,7 +19757,9 @@ var MainCheckout = /*#__PURE__*/function () {
         var selectedState = $('.customer-address-payment-form #address_state option:selected').val();
         var selectedCity = $('.customer-address-payment-form #address_city option:selected').val();
         $('.shipping-info-loading').show();
-        $(shippingForm).load(window.location.href + '?' + $.param(methods) + ' ' + shippingForm + ' > *', function () {
+        $(shippingForm).load(window.location.href + '?' + $.param(methods) + ' '
+        /* Meribout */
+        + '&wilaya_id=' + $('#address_wilaya option:selected').val() + shippingForm + ' > *', function () {
           if (!isAddressAvailable) {
             $('.customer-address-payment-form').replaceWith(addressForm);
 
