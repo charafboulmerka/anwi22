@@ -487,7 +487,8 @@ class Product extends BaseModel
      */
     public function getOriginalPriceAttribute()
     {
-        return $this->front_sale_price ?? $this->price ?? 0;
+        $orginalP = $this->front_sale_price ?? $this->price ?? 0;
+        return $orginalP+$this->marge;
     }
 
     /**

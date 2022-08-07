@@ -910,6 +910,7 @@ class PublicCheckoutController
                     'ec_products.id',
                     'ec_products.images',
                     'ec_products.name',
+                    'ec_products.marge', //Charaf
                     'ec_products.price',
                     'ec_products.sale_price',
                     'ec_products.sale_type',
