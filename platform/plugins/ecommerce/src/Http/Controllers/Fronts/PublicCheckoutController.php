@@ -749,13 +749,15 @@ class PublicCheckoutController
 
             $shippingAmount = Arr::get(Arr::first($shippingMethod), 'price', 0);
         }
-
+        // Hahou
+        $yalidine_wilayas_price = YalidineWilayas::where("id",$request->input('address.state'))->get();
+        $shippingAmount = $yalidine_wilayas_price->first()->yalidine_price;
         if (session()->has('applied_coupon_code')) {
             $discount = $applyCouponService->getCouponData(session('applied_coupon_code'), $sessionData);
             if (empty($discount)) {
                 $removeCouponService->execute();
             } else {
-                $shippingAmount = Arr::get($sessionData, 'is_free_shipping') ? 0 : $shippingAmount;
+                //$shippingAmount = Arr::get($sessionData, 'is_free_shipping') ? 0 : $shippingAmount;
             }
         }
 
@@ -765,7 +767,6 @@ class PublicCheckoutController
         }
 
         $amount = Cart::instance('cart')->rawTotal() + (float)$shippingAmount - $promotionDiscountAmount - $couponDiscountAmount;
-
         $request->merge([
             'amount'          => $amount ?: 0,
             'currency'        => $request->input('currency', strtoupper(get_application_currency()->title)),
