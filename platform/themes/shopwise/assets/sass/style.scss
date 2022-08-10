@@ -4694,6 +4694,11 @@ footer .widget_title {
 .navigation--list .navigation__item span {
     display: block;
 }
+@media (min-width: 1200px){
+    .navigation--list {
+        display: none;
+    }
+}
 /*===================================*
   11.END FOOTER STYLE
 *===================================*/

@@ -182,13 +182,15 @@ PAGE JS
     $(".pr_search_trigger").toggleClass('show');
     $('.product_search_form').toggleClass('show');
   });
-  $(".footer-cart-mobile").on('click', function () {
-    $('.categories_btn').attr('aria-expanded', 'false');
-    $('#navCatContent').removeClass('show');
-  });
   var rclass = true;
+  $(".footer-categories-mobile").on('click', function () {
+    rclass = false;
+  });
   $("html").on('click', function () {
+    console.log("click on HTML");
+
     if (rclass) {
+      console.log("rclass is true on HTML");
       $('.categories_btn').addClass('collapsed');
       $('.categories_btn,.side_navbar_toggler').attr('aria-expanded', 'false');
       $('#navCatContent,#navbarSidetoggle').removeClass('show');

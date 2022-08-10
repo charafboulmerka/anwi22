@@ -2003,6 +2003,11 @@ footer .widget_title {
   display: block;
 }
 
+@media (min-width: 1200px) {
+  .navigation--list {
+    display: none;
+  }
+}
 /*===================================*
   11.END FOOTER STYLE
 *===================================*/
