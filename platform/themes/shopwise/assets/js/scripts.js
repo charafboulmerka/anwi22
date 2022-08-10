@@ -192,6 +192,18 @@ PAGE JS
         $('.product_search_form').toggleClass('show');
     });
 
+    /* Meribout */
+
+    $(".footer-search-sidebar").on('click', function () {
+        $(".pr_search_trigger").toggleClass('show');
+        $('.product_search_form').toggleClass('show');
+    });
+
+    $(".footer-cart-mobile").on('click', function () {
+        $('.categories_btn').attr('aria-expanded', 'false');
+        $('#navCatContent').removeClass('show');
+    });
+
     var rclass = true;
 
     $("html").on('click', function () {

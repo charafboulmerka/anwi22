@@ -4666,6 +4666,34 @@ footer .widget_title {
     margin-right: 10px;
 }
 
+.navigation--list {
+    background-color: #fff;
+    border-top: 1px solid #ccc;
+    bottom: 0;
+    left: 0;
+    padding: 10px 30px;
+    position: fixed;
+    width: 100%;
+    z-index: 10002;
+}
+.navigation--list .navigation__content {
+    align-items: center;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    margin: 0 auto;
+    max-width: 400px;
+}
+.navigation--list .navigation__item {
+    text-align: center;
+    color: #2e2c2c;
+}
+.navigation--list .navigation__item i {
+    font-size: 24px;
+}
+.navigation--list .navigation__item span {
+    display: block;
+}
 /*===================================*
   11.END FOOTER STYLE
 *===================================*/
