@@ -19,6 +19,7 @@ class YalidineWilayas extends BaseModel
     protected $fillable = [
         'name',
         'yalidine_price',
+        'yalidine_desk_price', //Charaf
         'anwi_price'
     ];
 
@@ -43,6 +44,18 @@ class YalidineWilayas extends BaseModel
         return $this->get("yalidine_price")->first()->yalidine_price;
     }
 
+
+            /**
+     * @return Price
+     */
+    /**Charaf */
+    public function getDeskPriceByIDWilaya()
+    {
+        return $this->get("yalidine_desk_price")->first()->yalidine_price;
+    }
+
+
+    
     protected static function boot()
     {
         parent::boot();

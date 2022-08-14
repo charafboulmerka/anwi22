@@ -292,15 +292,28 @@ class PublicCheckoutController
         
         /* Meribout */
         $yalidine_wilayas = YalidineWilayas::all();
+        $selected_shipping_option = $request->input('shipping_option');
+
         if ( request('wilaya_id') != NULL) {
             $this->algiers->id = request('wilaya_id');
             $yalidine_wilayas_price = YalidineWilayas::where("id",$this->algiers->id)->get();
-            $shippingAmount = $yalidine_wilayas_price->first()->yalidine_price;
+                        //Charaf -- Get shipping price by selected option
+            if($selected_shipping_option==4){ // Desk
+                $shippingAmount = $yalidine_wilayas_price->first()->yalidine_desk_price;
+            }
+            else{ // à domicile
+                $shippingAmount = $yalidine_wilayas_price->first()->yalidine_price;
+            }
             $algiers_communes = $this->algiers->variationCommunes()->get();
         } else {
             $this->algiers->id = 16;
             $yalidine_wilayas_price = YalidineWilayas::where("id",$this->algiers->id)->get();
-            $shippingAmount = $yalidine_wilayas_price->first()->yalidine_price;
+            if($selected_shipping_option==4){ // Desk
+                $shippingAmount = $yalidine_wilayas_price->first()->yalidine_desk_price;
+            }
+            else{ // à domicile
+                $shippingAmount = $yalidine_wilayas_price->first()->yalidine_price;
+            }
             $algiers_communes = $this->algiers->variationCommunes()->get();
         }
         $wilaya_selected = $this->algiers->id;
@@ -467,6 +480,12 @@ class PublicCheckoutController
         if (Arr::get($sessionData, 'address_id') && Arr::get($sessionData, 'address_id') !== 'new') {
             $address = $this->addressRepository->findById(Arr::get($sessionData, 'address_id'));
         }
+
+                //Charaf -- check if user logged in and add it's email to the order
+                if(auth('customer')->check()){
+                    $address->email = auth('customer')->user()->email;
+                }
+        
 
         $addressData = [];
         if (!empty($address)) {
@@ -751,7 +770,16 @@ class PublicCheckoutController
         }
         // Hahou
         $yalidine_wilayas_price = YalidineWilayas::where("id",$request->input('address.state'))->get();
-        $shippingAmount = $yalidine_wilayas_price->first()->yalidine_price;
+
+        // Charaf
+        $selected_shipping_option = $request->input('shipping_option');
+
+        if($selected_shipping_option==4){ // Desk
+            $shippingAmount = $yalidine_wilayas_price->first()->yalidine_desk_price;
+        }
+        else{ // à domicile
+            $shippingAmount = $yalidine_wilayas_price->first()->yalidine_price;
+        }
         if (session()->has('applied_coupon_code')) {
             $discount = $applyCouponService->getCouponData(session('applied_coupon_code'), $sessionData);
             if (empty($discount)) {

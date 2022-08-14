@@ -8,5 +8,5 @@
             value="{{ $shippingKey }}"
             data-option="{{ $shippingOption }}"
     >
-    <label for="shipping-method-{{ $shippingKey }}-{{ $shippingOption }}">{{ $shippingItem['name'] }} - {{ format_price($shippingItem['price']) }}</strong></label>
+    <label for="shipping-method-{{ $shippingKey }}-{{ $shippingOption }}">{{ $shippingItem['name'] }}</strong></label>
 </li>
