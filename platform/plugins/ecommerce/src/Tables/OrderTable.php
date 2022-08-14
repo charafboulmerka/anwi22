@@ -85,12 +85,14 @@ class OrderTable extends TableAbstract
             ->addColumn('operations', function ($item) {
                 return $this->getOperations('orders.edit', 'orders.destroy', $item);
             })
-            ->filter(function ($query) {
+            ->filter(function ($query) { //charaf-order
                 $keyword = $this->request->input('search.value');
                 if ($keyword) {
                     return $query
                         ->whereHas('address', function ($subQuery) use ($keyword) {
-                            return $subQuery->where('name', 'LIKE', '%' . $keyword . '%');
+                            return $subQuery->where('order_id', 'LIKE', '%' . $keyword . '%')
+                            ->orWhere('phone', 'LIKE', '%' . $keyword . '%')
+                            ->orWhere('name', 'LIKE', '%' . $keyword . '%');
                         });
                 }
 
