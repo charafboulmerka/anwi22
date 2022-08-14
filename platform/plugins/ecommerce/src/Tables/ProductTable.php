@@ -73,6 +73,9 @@ class ProductTable extends TableAbstract
             ->editColumn('checkbox', function ($item) {
                 return $this->getCheckbox($item->id);
             })
+            ->editColumn('marge', function ($item) {
+                return format_price($item->marge);
+            })
             ->editColumn('price', function ($item) {
                 return $item->price_in_table;
             })
@@ -158,6 +161,10 @@ class ProductTable extends TableAbstract
                 'title' => trans('core/base::tables.name'),
                 'class' => 'text-start',
             ],
+            'marge'        => [ //Charaf
+                'title' => 'Marge',
+                'class' => 'text-start',
+            ],
             'price'        => [
                 'title' => trans('plugins/ecommerce::products.price'),
                 'class' => 'text-start',
@@ -169,11 +176,11 @@ class ProductTable extends TableAbstract
             'quantity'     => [
                 'title' => trans('plugins/ecommerce::products.quantity'),
                 'class' => 'text-start',
-            ],
+            ],/*
             'sku'          => [
                 'title' => trans('plugins/ecommerce::products.sku'),
                 'class' => 'text-start',
-            ],
+            ],*/
             'order'        => [
                 'title' => trans('core/base::tables.order'),
                 'width' => '50px',
