@@ -151,13 +151,13 @@ class OrderTable extends TableAbstract
                 'class' => 'text-center',
             ];
         }
-
+        /* Meribout */
         $columns += [
             'shipping_amount' => [
                 'title' => trans('plugins/ecommerce::order.shipping_amount'),
                 'class' => 'text-center',
             ],
-            'payment_method'  => [
+            /*'payment_method'  => [
                 'name'  => 'payment_id',
                 'title' => trans('plugins/ecommerce::order.payment_method'),
                 'class' => 'text-start',
@@ -166,7 +166,7 @@ class OrderTable extends TableAbstract
                 'name'  => 'payment_id',
                 'title' => trans('plugins/ecommerce::order.payment_status_label'),
                 'class' => 'text-center',
-            ],
+            ],*/
             'status'          => [
                 'title' => trans('core/base::tables.status'),
                 'class' => 'text-center',
