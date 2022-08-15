@@ -41,7 +41,7 @@
         <div class="panel-heading order-bottom shipment-actions-wrapper">
             <div class="flexbox-grid-default">
                 <div class="flexbox-content">
-                    @if (in_array($shipment->status, [\Botble\Ecommerce\Enums\ShippingStatusEnum::NOT_APPROVED, \Botble\Ecommerce\Enums\ShippingStatusEnum::APPROVED]))
+                    @if (in_array($shipment->status, [\Botble\Ecommerce\Enums\ShippingStatusEnum::APPROVED])) //Charaf REMOVE NOT_APPROVED status
                         <button type="button" class="btn btn-secondary btn-destroy btn-cancel-shipment" data-action="{{ route('orders.cancel-shipment', $shipment->id) }}">{{ trans('plugins/ecommerce::shipping.cancel_shipping') }}</button>
                     @endif
 

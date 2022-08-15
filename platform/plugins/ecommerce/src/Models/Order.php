@@ -163,7 +163,8 @@ class Order extends BaseModel
      */
     public function canBeCanceled(): bool
     {
-        if ($this->shipment && in_array($this->shipment->status, [ShippingStatusEnum::PICKED, ShippingStatusEnum::DELIVERED, ShippingStatusEnum::AUDITED])) {
+        //Charaf remove AUDITED status
+        if ($this->shipment && in_array($this->shipment->status, [ShippingStatusEnum::PICKED, ShippingStatusEnum::DELIVERED])) {
             return false;
         }
 
@@ -175,7 +176,8 @@ class Order extends BaseModel
      */
     public function canBeCanceledByAdmin(): bool
     {
-        if ($this->shipment && in_array($this->shipment->status, [ShippingStatusEnum::DELIVERED, ShippingStatusEnum::AUDITED])) {
+        //Charaf remove AUDITED status
+        if ($this->shipment && in_array($this->shipment->status, [ShippingStatusEnum::DELIVERED])) {
             return false;
         }
 

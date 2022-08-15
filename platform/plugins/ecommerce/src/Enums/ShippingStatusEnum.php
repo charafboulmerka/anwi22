@@ -23,19 +23,21 @@ use Html;
  */
 class ShippingStatusEnum extends Enum
 {
-    public const NOT_APPROVED = 'not_approved';
+    //Charaf
+    
+    //public const NOT_APPROVED = 'not_approved';
     public const APPROVED = 'approved';
     public const PENDING = 'pending';
-    public const ARRANGE_SHIPMENT = 'arrange_shipment';
-    public const READY_TO_BE_SHIPPED_OUT = 'ready_to_be_shipped_out';
+    //public const ARRANGE_SHIPMENT = 'arrange_shipment';
+    //public const READY_TO_BE_SHIPPED_OUT = 'ready_to_be_shipped_out';
     public const PICKING = 'picking';
-    public const DELAY_PICKING = 'delay_picking';
-    public const PICKED = 'picked';
-    public const NOT_PICKED = 'not_picked';
+    //public const DELAY_PICKING = 'delay_picking';
+    //public const PICKED = 'picked';
+    //public const NOT_PICKED = 'not_picked';
     public const DELIVERING = 'delivering';
     public const DELIVERED = 'delivered';
     public const NOT_DELIVERED = 'not_delivered';
-    public const AUDITED = 'audited';
+    //public const AUDITED = 'audited';
     public const CANCELED = 'canceled';
 
     /**
