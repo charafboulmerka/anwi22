@@ -24,21 +24,21 @@ use Html;
 class ShippingStatusEnum extends Enum
 {
     //Charaf
-    
     //public const NOT_APPROVED = 'not_approved';
     public const APPROVED = 'approved';
     public const PENDING = 'pending';
-    //public const ARRANGE_SHIPMENT = 'arrange_shipment';
-    //public const READY_TO_BE_SHIPPED_OUT = 'ready_to_be_shipped_out';
     public const PICKING = 'picking';
-    //public const DELAY_PICKING = 'delay_picking';
-    //public const PICKED = 'picked';
-    //public const NOT_PICKED = 'not_picked';
     public const DELIVERING = 'delivering';
     public const DELIVERED = 'delivered';
     public const NOT_DELIVERED = 'not_delivered';
-    //public const AUDITED = 'audited';
     public const CANCELED = 'canceled';
+    //public const ARRANGE_SHIPMENT = 'arrange_shipment';
+    //public const READY_TO_BE_SHIPPED_OUT = 'ready_to_be_shipped_out';
+    //public const DELAY_PICKING = 'delay_picking';
+    //public const PICKED = 'picked';
+    //public const NOT_PICKED = 'not_picked';
+    //public const AUDITED = 'audited';
+    
 
     /**
      * @var string
@@ -48,13 +48,10 @@ class ShippingStatusEnum extends Enum
     /**
      * @return string
      */
+    /* Meribout */
     public function toHtml()
     {
         switch ($this->value) {
-            case self::NOT_APPROVED:
-                return Html::tag('span', self::NOT_APPROVED()->label(), ['class' => 'label-warning status-label'])
-                    ->toHtml();
-
             case self::APPROVED:
                 return Html::tag('span', self::APPROVED()->label(), ['class' => 'label-warning status-label'])
                     ->toHtml();
@@ -66,7 +63,23 @@ class ShippingStatusEnum extends Enum
             case self::PICKING:
                 return Html::tag('span', self::PICKING()->label(), ['class' => 'label-info status-label'])
                     ->toHtml();
+            case self::DELIVERING:
+                return Html::tag('span', self::DELIVERING()->label(), ['class' => 'label-info status-label'])
+                    ->toHtml();
 
+            case self::DELIVERED:
+                return Html::tag('span', self::DELIVERED()->label(), ['class' => 'label-success status-label'])
+                    ->toHtml();
+            case self::NOT_DELIVERED:
+                return Html::tag('span', self::NOT_DELIVERED()->label(), ['class' => 'label-danger status-label'])
+                    ->toHtml();
+
+            case self::CANCELED:
+                return Html::tag('span', self::CANCELED()->label(), ['class' => 'label-danger status-label'])
+                    ->toHtml();
+            /*case self::NOT_APPROVED:
+                return Html::tag('span', self::NOT_APPROVED()->label(), ['class' => 'label-warning status-label'])
+                    ->toHtml();
             case self::DELAY_PICKING:
                 return Html::tag('span', self::DELAY_PICKING()->label(), ['class' => 'label-warning status-label'])
                     ->toHtml();
@@ -81,27 +94,11 @@ class ShippingStatusEnum extends Enum
 
             case self::READY_TO_BE_SHIPPED_OUT:
                 return Html::tag('span', self::READY_TO_BE_SHIPPED_OUT()->label(), ['class' => 'label-info status-label'])
-                    ->toHtml();
-
-            case self::DELIVERING:
-                return Html::tag('span', self::DELIVERING()->label(), ['class' => 'label-info status-label'])
-                    ->toHtml();
-
-            case self::DELIVERED:
-                return Html::tag('span', self::DELIVERED()->label(), ['class' => 'label-success status-label'])
-                    ->toHtml();
+                    ->toHtml();            
 
             case self::AUDITED:
                 return Html::tag('span', self::AUDITED()->label(), ['class' => 'label-success status-label'])
-                    ->toHtml();
-
-            case self::NOT_DELIVERED:
-                return Html::tag('span', self::NOT_DELIVERED()->label(), ['class' => 'label-danger status-label'])
-                    ->toHtml();
-
-            case self::CANCELED:
-                return Html::tag('span', self::CANCELED()->label(), ['class' => 'label-danger status-label'])
-                    ->toHtml();
+                    ->toHtml();*/
 
             default:
                 return parent::toHtml();

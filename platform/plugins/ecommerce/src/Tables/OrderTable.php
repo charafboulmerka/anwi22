@@ -25,6 +25,8 @@ class OrderTable extends TableAbstract
      */
     protected $hasFilter = true;
 
+    
+
     /**
      * OrderTable constructor.
      * @param DataTables $table
@@ -56,6 +58,9 @@ class OrderTable extends TableAbstract
             ->editColumn('status', function ($item) {
                 return BaseHelper::clean($item->status->toHtml());
             })
+            ->editColumn('imen', function ($item) {
+                return BaseHelper::clean($item->shipment->status->toHtml());
+            })            
             ->editColumn('payment_status', function ($item) {
                 return $item->payment->status->label() ? BaseHelper::clean($item->payment->status->toHtml()) : '&mdash;';
             })
@@ -169,6 +174,10 @@ class OrderTable extends TableAbstract
             ],*/
             'status'          => [
                 'title' => trans('core/base::tables.status'),
+                'class' => 'text-center',
+            ],
+            'imen'          => [
+                'title' => "Imen",
                 'class' => 'text-center',
             ],
             'created_at'      => [
