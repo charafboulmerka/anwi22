@@ -58,7 +58,7 @@ class OrderTable extends TableAbstract
             ->editColumn('status', function ($item) {
                 return BaseHelper::clean($item->status->toHtml());
             })
-            ->editColumn('imen', function ($item) {
+            ->editColumn('statu_final', function ($item) {
                 return BaseHelper::clean($item->shipment->status->toHtml());
             })            
             ->editColumn('payment_status', function ($item) {
@@ -176,8 +176,8 @@ class OrderTable extends TableAbstract
                 'title' => trans('core/base::tables.status'),
                 'class' => 'text-center',
             ],
-            'imen'          => [
-                'title' => "Imen",
+            'statu_final'          => [
+                'title' => "Statu Final",
                 'class' => 'text-center',
             ],
             'created_at'      => [
