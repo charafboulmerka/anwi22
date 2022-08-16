@@ -139,6 +139,20 @@ class ShipmentController extends BaseController
                     'order_id'    => $shipment->order_id,
                     'user_id'     => Auth::id(),
                 ]);
+                //Charaf
+                $order = $this->orderRepository->createOrUpdate(
+                    ['status' => OrderStatusEnum::CANCELED],
+                    ['id' => $shipment->order_id]
+                );
+
+                OrderHelper::cancelOrder($order);
+                break;
+                default:
+                 //Charaf
+                 $order = $this->orderRepository->createOrUpdate(
+                    ['status' => OrderStatusEnum::PROCESSING],
+                    ['id' => $shipment->order_id]
+                );
                 break;
         }
 

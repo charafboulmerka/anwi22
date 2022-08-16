@@ -471,11 +471,22 @@ class OrderController extends BaseController
      */
     public function postConfirm(Request $request, BaseHttpResponse $response)
     {
+        error_log("postConfirm");
         $order = $this->orderRepository->findOrFail($request->input('order_id'));
+        $order_id = $order->id;
         $order->is_confirmed = 1;
         if ($order->status == OrderStatusEnum::PENDING) {
             $order->status = OrderStatusEnum::PROCESSING;
         }
+        //Charaf
+        if ($order->status == OrderStatusEnum::CANCELED) {
+            $order->status = OrderStatusEnum::PENDING;
+        }
+        //update shipment status to pending 
+        $shipment = $this->shipmentRepository->createOrUpdate(
+            ['status' => ShippingStatusEnum::PENDING],
+            compact('order_id')
+        );
 
         $this->orderRepository->createOrUpdate($order);
 
@@ -606,7 +617,7 @@ class OrderController extends BaseController
             'cod_amount' => $request->input('cod_amount') ?? ($order->payment->status != PaymentStatusEnum::COMPLETED ? $order->amount : 0),
             'cod_status' => 'pending',
             'type'       => $request->input('method'),
-            'status'     => ShippingStatusEnum::DELIVERING,
+            'status'     => ShippingStatusEnum::PICKING,
             'price'      => $order->shipping_amount,
             'store_id'   => $request->input('store_id'),
         ];
@@ -728,6 +739,7 @@ class OrderController extends BaseController
         if (!$order->canBeCanceledByAdmin()) {
             abort(403);
         }
+        $order->status = OrderStatusEnum::CANCELED; //Charaf
 
         OrderHelper::cancelOrder($order);
 

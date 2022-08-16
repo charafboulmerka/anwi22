@@ -317,12 +317,19 @@
                                                 <span>{{ trans('plugins/ecommerce::order.confirm_order') }}</span>
                                             @endif
                                         </div>
+                                        <!--Charaf-->
                                         @if (!$order->is_confirmed)
-                                            <div class="flexbox-auto-left">
-                                                <form action="{{ route('orders.confirm') }}">
+                                            <div class="flexbox-auto-left btn-group">
+                                                <form action="{{ route('orders.confirm') }}" class="m-1">
                                                     <input type="hidden" name="order_id" value="{{ $order->id }}">
                                                     <button
                                                         class="btn btn-primary btn-confirm-order">{{ trans('plugins/ecommerce::order.confirm') }}</button>
+                                                </form>
+                                                <form action="{{ route('orders.cancel', ['id' => $order->id ]) }}" class="m-1" method="POST">
+                                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                                    <input type="hidden" name="id" value="{{ $order->id }}">
+                                                        <button
+                                                        class="btn btn-danger btn-cancel-order">{{ trans('plugins/ecommerce::order.cancel') }}</button>
                                                 </form>
                                             </div>
                                         @endif
@@ -339,8 +346,19 @@
                                             </svg>
                                         </div>
                                         <div class="flexbox-auto-content ml15 mr15 text-upper">
+                                            <!--Charaf-->
                                             <span>{{ trans('plugins/ecommerce::order.order_was_canceled') }}</span>
+
+                      
+
                                         </div>
+                                        <div class="flexbox-auto-left btn-group">
+                                                <form action="{{ route('orders.confirm') }}" class="m-1">
+                                                    <input type="hidden" name="order_id" value="{{ $order->id }}">
+                                                        <button
+                                                        class="btn btn-danger btn-confirm-order">Mes en attente</button>
+                                                </form>
+                                            </div>
                                     @elseif ($order->payment->id)
                                         <div class="flexbox-auto-left">
                                             @if (!$order->payment->status || $order->payment->status == \Botble\Payment\Enums\PaymentStatusEnum::PENDING)

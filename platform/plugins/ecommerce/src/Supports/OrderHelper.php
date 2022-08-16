@@ -798,7 +798,7 @@ class OrderHelper
     public function cancelOrder(Order $order): Order
     {
         $order->status = OrderStatusEnum::CANCELED;
-        $order->is_confirmed = true;
+        //$order->is_confirmed = true;
         $order->save();
 
         event(new OrderCancelledEvent($order));
