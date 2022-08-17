@@ -199,29 +199,6 @@ PAGE JS
         }, 800);
     });
 
-    $(".footer-cart-mobile").on('click', function () {
-        /*if ( $(".cart_box").hasClass('show') ) {
-            console.log("dispose");
-            $(".cart_trigger").attr("aria-expanded","false");            
-        } else {
-            console.log("toggle");
-            $(".cart_dropdown").dropdown("toggle");
-            $(".cart_trigger").attr("aria-expanded","true");
-        }*/
-        $(".cart_dropdown").trigger("click");
-        
-        /*$(".cart_dropdown").addClass('show');
-            $(".cart_box").addClass('show');
-        if($('.nav-link.cart_trigger.btn-shopping-cart').attr('aria-expanded') == true) {
-            $(".cart_dropdown").removeClass('show');
-            $(".cart_box").removeClass('show');
-            $('.nav-link.cart_trigger.btn-shopping-cart').attr('aria-expanded', false);
-        }else {
-            $(".cart_dropdown").addClass('show');
-            $(".cart_box").addClass('show');
-            $('.nav-link.cart_trigger.btn-shopping-cart').attr('aria-expanded', true);
-        }*/
-    });
 
     $("html").on('click', function () {
         if (rclass) {

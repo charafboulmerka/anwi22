@@ -82,7 +82,7 @@
                 <a class="navigation__item ps-toggle--sidebar footer-menu-mobile" ><i class="ion-android-menu"></i><span> Menu</span></a>
                 <a class="navigation__item ps-toggle--sidebar footer-categories-mobile" ><i class="ion-android-apps"></i><span> Categories</span></a>
                 <a class="navigation__item ps-toggle--sidebar footer-search-sidebar" ><i class="ion-ios-search"></i><span> Search</span></a>
-                <a class="navigation__item ps-toggle--sidebar footer-cart-mobile" ><i class="ion-ios-cart"></i><span> Cart</span></a>
+                <a href="{{ route('public.cart') }}" class="navigation__item ps-toggle--sidebar footer-cart-mobile" ><i class="ion-ios-cart"></i><span> Cart</span></a>
             </div>
         </div>
     </footer>
