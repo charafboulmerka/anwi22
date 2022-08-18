@@ -11,7 +11,7 @@ if (!function_exists('get_featured_brands')) {
      * @param array $withCount
      * @return mixed
      */
-    function get_featured_brands(int $limit = 8, array $with = ['slugable'], array $withCount = [])
+    function get_featured_brands(int $limit = 40, array $with = ['slugable'], array $withCount = []) //Charaf change limit to 40 instead of 8
     {
         return app(BrandInterface::class)->advancedGet([
             'condition' => [
