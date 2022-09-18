@@ -19681,7 +19681,7 @@ var MainCheckout = /*#__PURE__*/function () {
           element.prop("disabled", true);
           $(shippingForm).load(window.location.href + '?shipping_method=' + shippingMethod.val() + '&shipping_option=' + shippingMethod.data('option')
           /* Meribout */
-          + '&wilaya_id=' + $('#address_wilaya option:selected').val() + ' ' + shippingForm + ' > *', function () {
+          + '&wilaya_id=' + wilaya_selected + ' ' + shippingForm + ' > *', function () {
             if (!isAddressAvailable) {
               $('.customer-address-payment-form').replaceWith(addressForm);
 
@@ -19697,6 +19697,8 @@ var MainCheckout = /*#__PURE__*/function () {
                 $('.customer-address-payment-form #address_city').val(selectedCity);
               }
             }
+
+            $("#address_wilaya option:selected").removeAttr("selected"); //Charaf
 
             $('#address_wilaya option[value="' + wilaya_selected + '"]').attr('selected', 'selected');
             getCommunesListByWilayaID($('#address_wilaya'), wilaya_selected);
@@ -19756,10 +19758,12 @@ var MainCheckout = /*#__PURE__*/function () {
         var selectedCountry = $('.customer-address-payment-form #address_country option:selected').val();
         var selectedState = $('.customer-address-payment-form #address_state option:selected').val();
         var selectedCity = $('.customer-address-payment-form #address_city option:selected').val();
+        var wilaya_selected = $('#address_wilaya option:selected').val(); //Charaf
+
         $('.shipping-info-loading').show();
         $(shippingForm).load(window.location.href + '?' + $.param(methods) + ' '
         /* Meribout */
-        + '&wilaya_id=' + $('#address_wilaya option:selected').val() + shippingForm + ' > *', function () {
+        + '&wilaya_id=' + wilaya_selected + shippingForm + ' > *', function () {
           if (!isAddressAvailable) {
             $('.customer-address-payment-form').replaceWith(addressForm);
 
@@ -19775,6 +19779,8 @@ var MainCheckout = /*#__PURE__*/function () {
               $('.customer-address-payment-form #address_city').val(selectedCity);
             }
           }
+
+          $('#address_wilaya option[value="' + wilaya_selected + '"]').attr('selected', 'selected'); //Charaf
 
           $('.shipping-info-loading').hide();
           enablePaymentMethodsForm();
@@ -19796,8 +19802,12 @@ var MainCheckout = /*#__PURE__*/function () {
         var selectedCountry = $('.customer-address-payment-form #address_country option:selected').val();
         var selectedState = $('.customer-address-payment-form #address_state option:selected').val();
         var selectedCity = $('.customer-address-payment-form #address_city option:selected').val();
+        var wilaya_selected = $('#address_wilaya option:selected').val(); //Charaf
+
         $('.shipping-info-loading').show();
-        $(shippingForm).load(window.location.href + '?shipping_method=' + $this.val() + '&shipping_option=' + $this.data('option') + ' ' + shippingForm + ' > *', function () {
+        $(shippingForm).load(window.location.href + '?shipping_method=' + $this.val() + '&shipping_option=' + $this.data('option')
+        /* Charaf */
+        + '&wilaya_id=' + wilaya_selected + ' ' + shippingForm + ' > *', function () {
           if (!isAddressAvailable) {
             $('.customer-address-payment-form').replaceWith(addressForm);
 
@@ -19813,6 +19823,8 @@ var MainCheckout = /*#__PURE__*/function () {
               $('.customer-address-payment-form #address_city').val(selectedCity);
             }
           }
+
+          $('#address_wilaya option[value="' + wilaya_selected + '"]').attr('selected', 'selected'); //Charaf
 
           $('.shipping-info-loading').hide();
           enablePaymentMethodsForm();

@@ -1,5 +1,4 @@
 <?php
-
 if (!defined('DASHBOARD_FILTER_ADMIN_LIST')) {
     define('DASHBOARD_FILTER_ADMIN_LIST', 'admin_dashboard_list');
 }

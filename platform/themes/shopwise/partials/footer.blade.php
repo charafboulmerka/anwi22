@@ -78,11 +78,15 @@
             </div>
         </div>
         <div class="navigation--list">
+            @if ( app()->getLocale() == 'ar')
+            <div class="navigation__content" dir="rtl">
+            @else 
             <div class="navigation__content">
-                <a class="navigation__item ps-toggle--sidebar footer-menu-mobile" ><i class="ion-android-menu"></i><span> Menu</span></a>
-                <a class="navigation__item ps-toggle--sidebar footer-categories-mobile" ><i class="ion-android-apps"></i><span> Categories</span></a>
-                <a class="navigation__item ps-toggle--sidebar footer-search-sidebar" ><i class="ion-ios-search"></i><span> Search</span></a>
-                <a href="{{ route('public.cart') }}" class="navigation__item ps-toggle--sidebar footer-cart-mobile" ><i class="ion-ios-cart"></i><span> Cart</span></a>
+            @endif
+                <a href="{{ route('public.cart') }}" class="navigation__item ps-toggle--sidebar footer-cart-mobile" ><i class="ion-ios-cart"></i><span> {{ __('Cart') }}</span></a>
+                <a class="navigation__item ps-toggle--sidebar footer-search-sidebar" ><i class="ion-ios-search"></i><span> {{ __('Search') }}</span></a>
+                <a class="navigation__item ps-toggle--sidebar footer-categories-mobile" ><i class="ion-android-apps"></i><span> {{ __('Categories') }}</span></a>
+                <a class="navigation__item ps-toggle--sidebar footer-menu-mobile" ><i class="ion-android-menu"></i><span> {{ __('Menu') }}</span></a>
             </div>
         </div>
     </footer>

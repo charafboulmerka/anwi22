@@ -995,7 +995,6 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   mounted: function mounted() {
-    console.log("zzaldnkaz");
     var context = this;
     $(document).on('click', 'body', function (e) {
       var container = $('.box-search-advance');
