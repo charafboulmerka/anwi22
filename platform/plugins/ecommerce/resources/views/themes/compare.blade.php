@@ -28,7 +28,7 @@
 
                                     @foreach($products as $product)
                                         <td class="product_price">
-                                            <span class="price">{{ format_price($product->front_sale_price_with_taxes) }}</span> @if ($product->front_sale_price !== $product->price) <del>{{ format_price($product->price_with_taxes) }} </del> <small>({{ get_sale_percentage($product->price, $product->front_sale_price) }})</small> @endif
+                                            <span class="price">{{ format_price($product->front_sale_price_with_taxes) }}</span> @if ($product->front_sale_price !== $product->price) <del>{{ format_price($product->price_with_taxes) }} </del> <small>({{ get_sale_percentage($product->price+$product->marge, $product->front_sale_price+$product->marge) }})</small> @endif
                                         </td>
                                     @endforeach
                                 </tr>

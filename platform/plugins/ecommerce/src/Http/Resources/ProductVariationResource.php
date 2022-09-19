@@ -32,7 +32,7 @@ class ProductVariationResource extends JsonResource
             'image_with_sizes'           => $this->image_with_sizes,
             'display_price'              => format_price($this->price_with_taxes),
             'display_sale_price'         => format_price($this->front_sale_price_with_taxes),
-            'sale_percentage'            => get_sale_percentage($this->price, $this->front_sale_price),
+            'sale_percentage'            => get_sale_percentage($this->price+$product->marge, $this->front_sale_price+$product->marge),
             'unavailable_attribute_ids'  => $this->unavailableAttributeIds,
             'success_message'            => $this->successMessage,
             'error_message'              => $this->errorMessage,

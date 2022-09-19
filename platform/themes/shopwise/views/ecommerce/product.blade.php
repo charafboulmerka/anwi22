@@ -36,7 +36,7 @@
                         <span class="price product-sale-price-text">{{ format_price($product->front_sale_price_with_taxes) }}</span>
                         <del class="product-price-text" @if ($product->front_sale_price == $product->price) style="display: none" @endif>{{ format_price($product->price_with_taxes) }}</del>
                         <div class="on_sale" @if ($product->front_sale_price == $product->price) style="display: none" @endif>
-                            <span class="on_sale_percentage_text">{{ get_sale_percentage($product->price, $product->front_sale_price) }}</span> <span>{{ __('Off') }}</span>
+                            <span class="on_sale_percentage_text">{{ get_sale_percentage($product->price+$product->marge, $product->front_sale_price+$product->marge) }}</span> <span>{{ __('Off') }}</span>
                         </div>
                     </div>
                     @if (EcommerceHelper::isReviewEnabled())

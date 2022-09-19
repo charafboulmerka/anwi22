@@ -21,7 +21,7 @@
                 @if ($product->front_sale_price !== $product->price)
                     <del>{{ format_price($product->price_with_taxes) }}</del>
                     <div class="on_sale">
-                        <span>{{ __(':percentage Off', ['percentage' => get_sale_percentage($product->price, $product->front_sale_price)]) }}</span>
+                        <span>{{ __(':percentage Off', ['percentage' => get_sale_percentage($product->price+$product->marge, $product->front_sale_price+$product->marge)]) }}</span>
                     </div>
                 @endif
             </div>
