@@ -1,0 +1,45 @@
+<?php
+
+return [
+    'count' => [
+        'customers' => 'Nombre total de clients',
+        'orders' => 'Commandes d’aujourd’hui',
+        'products' => 'Total des produits',
+        'revenue' => 'Chiffre d’affaires d’aujourd',
+    ],
+    'customers' => 'Clients',
+    'date_range_format_value' => 'de  :from au :to',
+    'earnings' => 'Bénéfices',
+    'items_earning_sales' => 'Articles gagnant des ventes: :value',
+    'name' => 'Rapport',
+    'order_completed_this_month' => 'commande(s) complétée(s) au cours de ce mois',
+    'order_processing_this_month' => 'traitement des commandes au cours de ce mois',
+    'orders' => 'Les commandes',
+    'product_name' => 'Nom du produit',
+    'product_out_of_stock' => 'produit(s) en rupture de stock',
+    'product_will_be_out_of_stock' => 'produit(s) sera bientôt en rupture de stock',
+    'products' => 'Les produits',
+    'quantity' => 'Quantité',
+    'ranges' => [
+        'last_30_days' => '30 derniers jours',
+        'last_7_days' => '7 derniers jours',
+        'this_month' => 'Ce mois-ci',
+        'this_week' => 'Cette semaine',
+        'this_year' => 'Cette année',
+        'today' => 'Aujourd’hui',
+    ],
+    'recent_orders' => 'Commandes récentes',
+    'revenue' => 'Revenu',
+    'revenue_statistics' => 'Statistiques sur les revenus',
+    'revenue_this_month' => 'Chiffre d’affaires ce mois-ci',
+    'sales_reports' => 'Rapports sur les ventes',
+    'select_range' => 'Sélectionner la plage',
+    'statistics' => 'Statistiques',
+    'top_selling_products' => 'Produits les plus vendus',
+    'total_earnings' => 'Gains totaux',
+    'widget' => [
+        'order' => [
+            'title' => 'Commandes',
+        ],
+    ],
+];

@@ -27,7 +27,7 @@
                  :aria-labelledby="productCollection.slug + '-tab'" :key="productCollection.id">
                 <div class="product_slider carousel_slider owl-carousel owl-theme dot_style1" v-carousel
                      data-loop="true" data-margin="20"
-                     data-responsive='{"0":{"items": "1"}, "481":{"items": "2"}, "768":{"items": "3"}, "991":{"items": "4"}}'>
+                     data-responsive='{"0":{"items": "2"}, "481":{"items": "2"}, "768":{"items": "3"}, "991":{"items": "4"}}'>
                     <div class="item" v-for="item in data" :key="item.id" v-if="data.length" v-html="item"></div>
                 </div>
             </div>
