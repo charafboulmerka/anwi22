@@ -471,9 +471,57 @@ class OrderController extends BaseController
      */
     public function postConfirm(Request $request, BaseHttpResponse $response)
     {
-        error_log("postConfirm");
         $order = $this->orderRepository->findOrFail($request->input('order_id'));
         $order_id = $order->id;
+        $total = $order->sub_total + $order->shipping_amount;
+        $productIds = $order->products->pluck('product_id')->all();
+        $products = $this->productRepository
+            ->getModel()
+            ->whereIn('id', $productIds)
+            ->get();
+        $productList = "";
+        foreach ($products as &$availableProduct) {
+            $productList .= $availableProduct->name." ";
+        }
+        /* Meribout */
+        $url = "https://api.yalidine.app/v1/parcels/"; 
+        $api_id = "90658462519136592340"; 
+        $api_token = "W0xPr4vAKOFhyLkaARCBgSacYTdpDICfl5q78uc1ErjItUJ0ifoZUe7ubikzvQ3s"; 
+        $data =
+            [ 
+                [
+                    "order_id"=>$order_id,
+                    "firstname"=>$order->address->name ,
+                    "familyname"=>$order->address->name,
+                    "contact_phone"=>$order->address->phone,
+                    "address"=>"",
+                    "to_commune_name"=>$order->address->city,
+                    "to_wilaya_name"=>$order->address->state,
+                    "product_list"=>$productList,
+                    "price"=>$total,
+                    "freeshipping"=> true,
+                    "is_stopdesk"=> ( $order->shipping_option == 5) ? false : true ,
+                    "has_exchange"=> 0,
+                    "product_to_collect" => null
+                ]
+            ];
+        $postdata = json_encode($data);
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $postdata);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                "X-API-ID: ". $api_id,
+                "X-API-TOKEN: ". $api_token,
+                "Content-Type: application/json"
+            )
+        );
+        $result = curl_exec($ch);
+        curl_close($ch);
+        /* End Meribout */
         $order->is_confirmed = 1;
         if ($order->status == OrderStatusEnum::PENDING) {
             $order->status = OrderStatusEnum::PROCESSING;
