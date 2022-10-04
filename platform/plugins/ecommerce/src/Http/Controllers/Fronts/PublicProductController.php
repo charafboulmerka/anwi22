@@ -87,7 +87,7 @@ class PublicProductController
         BrandInterface $brandRepository,
         ProductVariationInterface $productVariationRepository,
         SlugInterface $slugRepository,
-        YalidineWilayas $algiers,
+        YalidineWilayas $algiers
     ) {
         $this->algiers = $algiers;
         $this->productRepository = $productRepository;
