@@ -117,6 +117,17 @@ Route::group(['namespace' => 'Botble\Ecommerce\Http\Controllers', 'middleware' =
         });
     });
 });
+/*
+Route::post('quickprocess', [
+    'as'   => 'checkout.quickprocess',
+    'uses' => 'Botble\Ecommerce\Http\Controllers\Fronts\PublicCheckoutController@postQuickCheckout',
+]);
+*/
+
+    /**Charaf */
+    Route::post('ajax/quickprocess', 'Botble\Ecommerce\Http\Controllers\Fronts\PublicCheckoutController@ajaxQuickOrder')
+    ->name('ajax.quickprocess');  
+    
 
 Route::group(['namespace' => 'Botble\Ecommerce\Http\Controllers\Fronts', 'middleware' => ['web', 'core']], function () {
     Route::group(apply_filters(BASE_FILTER_GROUP_PUBLIC_ROUTE, []), function () {

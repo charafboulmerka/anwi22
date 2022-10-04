@@ -3,6 +3,7 @@
 namespace Botble\Ecommerce\Http\Controllers\Fronts;
 
 use BaseHelper;
+use Redirect;
 use Botble\Base\Http\Responses\BaseHttpResponse;
 use Botble\Ecommerce\Enums\OrderStatusEnum;
 use Botble\Ecommerce\Enums\ShippingMethodEnum;
@@ -11,6 +12,9 @@ use Botble\Ecommerce\Http\Requests\ApplyCouponRequest;
 use Botble\Ecommerce\Http\Requests\CheckoutRequest;
 use Botble\Ecommerce\Http\Requests\SaveCheckoutInformationRequest;
 use Botble\Ecommerce\Models\Order;
+use Botble\Ecommerce\Models\OrderProduct;
+use Botble\Ecommerce\Models\OrderAddress;
+use Botble\Ecommerce\Models\OrderHistory;
 use Botble\Ecommerce\Repositories\Interfaces\AddressInterface;
 use Botble\Ecommerce\Repositories\Interfaces\CustomerInterface;
 use Botble\Ecommerce\Repositories\Interfaces\DiscountInterface;
@@ -896,6 +900,81 @@ class PublicCheckoutController
             ->setNextUrl(PaymentHelper::getRedirectURL($token))
             ->setMessage(__('Checkout successfully!'));
     }
+
+    public function ajaxQuickOrder(Request $request)
+    {
+        error_log("charaf");
+        //get data from ajax
+        $wilaya = intval($request->input('wilaya'));
+        $commune = intval($request->input('commune'));
+        $wilaya_name = $request->input('wilaya_name');
+        $commune_name = $request->input('commune_name');
+        $product_id = intval($request->input('product_id'));
+        $product_name = $request->input('product_name');
+        $fullname = $request->input('fullname');
+        gettype($fullname);
+        $phone = $request->input('phone');
+        $qty = intval($request->input('qty'));
+        $shipping_option = $request->input('shipping_option');
+        $product_price = intval($request->input('product_price'));
+        $shipping_fee = intval($request->input('shipping_fee'));
+
+        
+        //add new order to orders table
+        $order = new Order();
+        $order->user_id = 0;
+        $order->shipping_option = $shipping_option;
+        $order->shipping_method = "default";
+        $order->shipping_amount = $shipping_fee;
+        $order->tax_amount = 0;
+        $order->amount = $product_price*$qty+$shipping_fee;
+        $order->sub_total = $product_price*$qty;
+        $order->coupon_code = null;
+        $order->discount_amount = 0;
+        $order->status = OrderStatusEnum::PENDING;
+        $order->token = "charaf";
+        $order->save();
+
+
+             
+        //add data to order_products table
+        $orderProduct = new OrderProduct();
+        $orderProduct->order_id = $order->id;
+        $orderProduct->qty = $qty;
+        $orderProduct->price = $product_price;
+        $orderProduct->tax_amount = 0;
+        $orderProduct->options = [];
+        $orderProduct->product_id = $product_id;
+        $orderProduct->product_name = $product_name;
+        $orderProduct->weight = 0.01;
+        $orderProduct->restock_quantity = 0;
+        $orderProduct->save();
+
+        //add data to order_histories table
+        $orderHistory = new OrderHistory();
+        $orderHistory->action = "create_order_from_payment_page";
+        $orderHistory->description = "Order was created from checkout page";
+        $orderHistory->order_id = $order->id;
+        $orderHistory->save();
+       
+        //add data to order_addresses table
+        $orderAddress = new OrderAddress();
+        $orderAddress->order_id = $order->id;
+        $orderAddress->name = $fullname;
+        $orderAddress->email = "checkout@anwi.dz";
+        $orderAddress->phone = $phone;
+        $orderAddress->address = "Addresse";
+        $orderAddress->city = $commune_name;
+        $orderAddress->state = $wilaya_name;
+        $orderAddress->country = "DZ";
+        $orderAddress->zip_code = null;
+        $orderAddress->save();
+        
+        $products = collect([]);
+        //return $order;
+        return view('plugins/ecommerce::orders.thank-you', compact('order', 'products'))->render();
+    }
+
 
     /**
      * @param string $token

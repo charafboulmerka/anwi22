@@ -90,160 +90,32 @@
                                     <button class="btn btn-fill-out @if ($product->isOutOfStock()) btn-disabled @endif" type="submit" @if ($product->isOutOfStock()) disabled @endif><i class="icon-basket-loaded"></i> {{ __('Add to cart') }}</button>
                                 @endif
                                 @if (EcommerceHelper::isQuickBuyButtonEnabled())
-                                    &nbsp;
-                                    <button class="d-none btn btn-dark @if ($product->isOutOfStock()) btn-disabled @endif" type="submit" @if ($product->isOutOfStock()) disabled @endif name="checkout">{{ __('Quick Buy') }}</button>
-                            
-                               <!-- Button trigger modal -->
+                                    <!-- Button trigger modal -->
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-  Acheter
+  Launch demo modal
 </button>
-
 
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Achat Rapide</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-      <div class="row">
-            <div class="col-12">
-                <div class="form-group mb-3 @if ($errors->has('address.name')) has-error @endif">
-                    <input type="text" name="address[name]" id="address_name" placeholder="{{ __('Full Name') }}" class="form-control address-control-item address-control-item-required checkout-input"
-                         >
-                    {!! Form::error('address.name', $errors) !!}
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-lg-12 col-12">
-                <div class="form-group  @if ($errors->has('address.phone')) has-error @endif">
-                    <input type="text" name="address[phone]" id="address_phone" placeholder="{{ __('Phone') }} {{ EcommerceHelper::isPhoneFieldOptionalAtCheckout() ? __('(optional)') : '' }}" class="form-control address-control-item {{ !EcommerceHelper::isPhoneFieldOptionalAtCheckout() ? 'address-control-item-required' : '' }} checkout-input">
-                    {!! Form::error('address.phone', $errors) !!}
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-        <div class="col-sm-6 col-12">
-                <div class="form-group mb-3 @if ($errors->has('address.state')) has-error @endif">
-                    @if (EcommerceHelper::loadCountriesStatesCitiesFromPluginLocation())
-                        <div class="select--arrow">
-                            <select name="address[state]" class="form-control address-control-item address-control-item-required" id="address_state" data-type="state" data-url="{{ route('ajax.states-by-country') }}">
-                                <option value="">{{ __('Select state...') }}</option>
-                                @if (old('address.country', Arr::get($sessionCheckoutData, 'country')) || !EcommerceHelper::isUsingInMultipleCountries())
-                                    @foreach(EcommerceHelper::getAvailableStatesByCountry(old('address.country', Arr::get($sessionCheckoutData, 'country'))) as $stateId => $stateName)
-                                        <option value="{{ $stateId }}" @if (old('address.state', Arr::get($sessionCheckoutData, 'state')) == $stateId) selected @endif>{{ $stateName }}</option>
-                                    @endforeach
-                                @endif
-                            </select>
-                            <i class="fas fa-angle-down"></i>
-                        </div>
-                    @else
-                    <select name="address[state]" class="form-control address-control-item address-control-item-required" id="address_wilaya" data-type="wilaya" data-url="{{ route('ajax.communes-by-wilaya') }}">
-                        @foreach ($yalidine_wilayas as $wilaya)
-                            <option value="{{ $wilaya->id }}" @if ($wilaya->id == $wilaya_selected) selected @endif>{{ $wilaya->name }}</option>
-                        @endforeach
-                    </select>
-                    @endif
-                    {!! Form::error('address.state', $errors) !!}
-                </div>
-        </div>
-
-        <div class="col-sm-6 col-12">
-            <div class="form-group  @if ($errors->has('address.city')) has-error @endif">
-                @if (EcommerceHelper::loadCountriesStatesCitiesFromPluginLocation())
-                    <div class="select--arrow">
-                        <select name="address[city]" class="form-control address-control-item address-control-item-required" id="address_city" data-type="city" data-url="{{ route('ajax.cities-by-state') }}">
-                            <option value="">{{ __('Select city...') }}</option>
-                            @if (old('address.state', Arr::get($sessionCheckoutData, 'state')))
-                                @foreach(EcommerceHelper::getAvailableCitiesByState(old('address.state', Arr::get($sessionCheckoutData, 'state'))) as $cityId => $cityName)
-                                    <option value="{{ $cityId }}" @if (old('address.city', Arr::get($sessionCheckoutData, 'city')) == $cityId) selected @endif>{{ $cityName }}</option>
-                                @endforeach
-                            @endif
-                        </select>
-                        <i class="fas fa-angle-down"></i>
-                    </div>
-                @else
-                <select name="address[city]" class="form-control address-control-item address-control-item-required" id="address_commune" data-type="commune">
-                    @foreach ($algiers_communes as $communes)
-                        <option value="{{ $communes->id }}">{{ $communes->name }}</option>
-                    @endforeach
-                </select>
-                @endif
-                {!! Form::error('address.city', $errors) !!}
-            </div>
-        </div>
-            
-        </div>
-
-        <div class="cart-product-quantity">
-        <div class="quantity">
-            <input type="button" value="-" class="minus" name="qty_update_minus">
-            <input type="text" name="qty_2" value="1" title="{{ __('Qty') }}" class="qty" size="4">
-            <input type="button" value="+" class="plus" name="qty_update_plus">
-        </div> &nbsp;
-        <div class="float-right number-items-available" style="@if (!$product->isOutOfStock()) display: none; @endif line-height: 45px;">
-            @if ($product->isOutOfStock())
-                <span class="text-danger">({{ __('Out of stock') }})</span>
-            @endif
-        </div>
-        </div>
-
-        <div class="ml-3 row">
-        <div class="form-check col-sm-6 col-6">
-        <input class="form-check-input" type="radio" name="shipping_option" id="ShippingDesk">
-        <label class="form-check-label" for="flexRadioDefault1">
-            Yalidine Desk
-        </label>
-        </div>
-        <div class="form-check col-sm-6 col-6">
-        <input class="form-check-input" type="radio" name="shipping_option" id="ShippingHome" checked>
-        <label class="form-check-label" for="flexRadioDefault2">
-            Yalidine à domicile
-        </label>
-        </div>
-        </div>
-
-    
-                <div class="mt-2 p-2">        
-            
-                    <div class="row">
-                        <div class="col-6">
-                            <p>{{ __('Shipping fee') }}:</p>
-                        </div>
-                        <div class="col-6 float-end">
-                            <p class="price-text shipping-price-text" id="shipping_fee"></p>
-                        </div>
-                    </div>
-                           
-
-
-                    <div class="row">
-                        <div class="col-6">
-                            <p><strong>{{ __('Total') }}</strong>:</p>
-                        </div>
-                        <div class="col-6 float-end">
-                            <p id="total" class="total-text raw-total-text"> </p>
-                            </div>
-                        </div>
-                    </div>
-
-
-        </div>
-
-        <div class="modal-footer">
-            <button id="btn_add_order" type="button" class="btn btn-primary" onclick="goAddOrder();">Checkout</button>
-        </div>
-        </div>
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
     </div>
-    </div>
-                            @endif
+  </div>
+</div>
+                                    @endif
                                 @if (EcommerceHelper::isCompareEnabled())
                                     <a class="add_compare js-add-to-compare-button" data-url="{{ route('public.compare.add', $product->id) }}" href="#"><i class="icon-shuffle"></i></a>
                                 @endif
@@ -497,190 +369,3 @@
         </div>
     </div>
 </div>
-
-<script>
-   var mQty = 1;
-   updateShippingFees();
-
-   function buttonAnimation(animation){
-    if(animation){
-        var btn = document.getElementById("btn_add_order");
-        btn.classList.add("btn-disabled");
-        btn.classList.add("button-loading");
-        btn.disabled = true;
-    }else{
-        var btn = document.getElementById("btn_add_order");
-        btn.classList.remove("btn-disabled");
-        btn.classList.remove("button-loading");
-        btn.disabled = false;
-    }
-   }
-
-    function goAddOrder(){
-            //check if input name is empty and show error
-                
-            var fullname = String($('#address_name').val());
-            var phone = String($('#address_phone').val());
-            if(fullname == ""){
-                alert("S'il vous plaît entrez votre nom");
-                return;
-            }else if(phone == ""){
-                alert("Veuillez entrer votre numéro de téléphone");
-                return;
-            }else{
-
-                buttonAnimation(true);
-            
-
-            var product_id = parseInt("{{$product->id}}");
-            var product_name = String("{{$product->name}}");
-            var product_price = parseInt("{{$product->front_sale_price_with_taxes}}");
-            var qty = mQty;
-            var shipping_option_check = $('input[name=shipping_option]:checked').attr('id');
-
-            var wilaya_selected = $('#address_wilaya option:selected').val();
-            var w =  <?php echo json_encode($yalidine_wilayas); ?>
-            
-            var shipping_option = 5;
-
-
-            if(shipping_option_check=="ShippingHome"){
-                var shipping_fee = w[wilaya_selected-1].yalidine_price;
-                shipping_option=5;
-            }else{
-                var shipping_fee = w[wilaya_selected-1].yalidine_desk_price;
-                shipping_option=4;
-            }
-
-            var wilaya = parseInt($('#address_wilaya').val());
-            var commune = parseInt($('#address_commune').val());
-            var wilaya_name = String($('#address_wilaya option:selected').text());
-            var commune_name = String($('#address_commune option:selected').text());
-            
-
-                $.ajax({
-                        url: "{{ route('ajax.quickprocess') }}",
-                        type: 'POST',
-                        data: {
-                            product_id: product_id,
-                            product_name: product_name,
-                            fullname: fullname,
-                            phone: phone,
-                            qty: qty,
-                            shipping_option: shipping_option,
-                            wilaya: wilaya,
-                            commune: commune,
-                            product_price: product_price,
-                            wilaya_name: wilaya_name,
-                            commune_name: commune_name,
-                            shipping_fee: shipping_fee
-                        },
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        },
-                        success: res => {
-                            //document.getElementById("main_view").innerHTML = res;
-                            
-                                    //redirect to route and send parms
-                            //public.checkout.success
-                            //buttonAnimation(false);
-                            document.write(res);
-                                        
-                        },
-                        error: data => {
-                            buttonAnimation(false);
-                            console.log(data);
-                        }
-                    });
-
-
-            }
-
-            
-            }
-    
-
-            //shipping_option print on change selection
-            $('input[type="radio"]').on('change', function(e) {
-                updateShippingFees();
-            });
-
-               
-             //shipping_option print on change selection
-             $('input[name="qty_update_plus"]').on('click', function(e) {
-                mQty +=1;
-                updateShippingFees();
-            });
-
-            $('input[name="qty_update_minus"]').on('click', function(e) {
-                if(mQty>0){
-                    mQty -=1;
-                }
-                updateShippingFees();
-            });
-
-            function updateShippingFees(){
-                const wilaya_selected = $('#address_wilaya option:selected').val();
-            //get wilaya price from yalidine_wilayas by index
-            var w =  <?php echo json_encode($yalidine_wilayas); ?>
-
-            var shipping_option = $('input[name=shipping_option]:checked').attr('id');
-    
-            if(shipping_option=="ShippingHome"){
-            var shipping_fee = w[wilaya_selected-1].yalidine_price;
-            }else{
-            var shipping_fee = w[wilaya_selected-1].yalidine_desk_price;
-            }
-
-            $('#shipping_fee').html(shipping_fee +" DA");
-
-            shipping_fee = parseInt(shipping_fee);
-
-            //var qty = $('input[name=qty_2]').val();
-            var qty = mQty;
-            if(qty==0){
-                qty = 1;
-            }
-            var total =  <?php echo json_encode($product->front_sale_price_with_taxes); ?>
-
-            $('#total').html(total*qty+shipping_fee +" DA");
-            }
-        
-            $(document).on('change', '#address_wilaya', event => {
-            event.preventDefault();
-            //loadShippingFeeAtTheFirstTime();
-            const wilaya_selected = $('#address_wilaya option:selected').val();
-            //get wilaya price from yalidine_wilayas by index
-            var w =  <?php echo json_encode($yalidine_wilayas); ?>
-            //get checked radio button
-            var shipping_option = $('input[name=shipping_option]:checked').attr('id');
-
-            updateShippingFees();
-
-            getCommunesListByWilayaID(wilaya_selected);
-        });
-
-        function getCommunesListByWilayaID(wilaya_id)  {
-            
-            $.ajax({
-                url: "{{ route('ajax.communes-by-wilaya') }}" + "?wilaya_id=" + wilaya_id,
-                type: 'POST',
-                data: {
-                    wilaya_id: wilaya_id,
-                },
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                success: res => {
-                    $('#address_commune').find('option').remove();
-                    $.each(JSON.parse(res), function(i,commune) {
-                        $('#address_commune').append($('<option>').val(commune.id).text(commune.name));
-                    });                    
-                },
-                error: data => {
-                }
-            });
-            
-            $('.shipping-info-loading').hide();
-        }
-</script>

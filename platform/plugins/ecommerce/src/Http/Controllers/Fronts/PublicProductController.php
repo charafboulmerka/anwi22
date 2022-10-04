@@ -35,6 +35,10 @@ use SlugHelper;
 use Theme;
 use Throwable;
 
+/* Meribout */
+use Botble\Ecommerce\Models\YalidineWilayas;
+use Botble\Ecommerce\Models\YalidineCommunes;
+
 class PublicProductController
 {
     /**
@@ -82,8 +86,10 @@ class PublicProductController
         ProductAttributeSetInterface $productAttributeSet,
         BrandInterface $brandRepository,
         ProductVariationInterface $productVariationRepository,
-        SlugInterface $slugRepository
+        SlugInterface $slugRepository,
+        YalidineWilayas $algiers,
     ) {
+        $this->algiers = $algiers;
         $this->productRepository = $productRepository;
         $this->productCategoryRepository = $productCategoryRepository;
         $this->productAttributeSetRepository = $productAttributeSet;
@@ -243,9 +249,38 @@ class PublicProductController
 
         [$productImages, $productVariation, $selectedAttrs] = EcommerceHelper::getProductVariationInfo($product);
 
+                /* Meribout */
+                $yalidine_wilayas = YalidineWilayas::all();
+                $selected_shipping_option = $request->input('shipping_option');
+        
+                if ( request('wilaya_id') != NULL) {
+                    $this->algiers->id = request('wilaya_id');
+                    $yalidine_wilayas_price = YalidineWilayas::where("id",$this->algiers->id)->get();
+                                //Charaf -- Get shipping price by selected option
+                    if($selected_shipping_option==4){ // Desk
+                        $shippingAmount = $yalidine_wilayas_price->first()->yalidine_desk_price;
+                    }
+                    else{ // à domicile
+                        $shippingAmount = $yalidine_wilayas_price->first()->yalidine_price;
+                    }
+                    $algiers_communes = $this->algiers->variationCommunes()->get();
+                } else {
+                    $this->algiers->id = 16;
+                    $yalidine_wilayas_price = YalidineWilayas::where("id",$this->algiers->id)->get();
+                    if($selected_shipping_option==4){ // Desk
+                        $shippingAmount = $yalidine_wilayas_price->first()->yalidine_desk_price;
+                    }
+                    else{ // à domicile
+                        $shippingAmount = $yalidine_wilayas_price->first()->yalidine_price;
+                    }
+                    $algiers_communes = $this->algiers->variationCommunes()->get();
+                }
+                $wilaya_selected = $this->algiers->id;
+
+                
         return Theme::scope(
             'ecommerce.product',
-            compact('product', 'selectedAttrs', 'productImages', 'productVariation'),
+            compact('product', 'selectedAttrs', 'productImages', 'productVariation','yalidine_wilayas','algiers_communes','wilaya_selected'),
             'plugins/ecommerce::themes.product'
         )
             ->render();
